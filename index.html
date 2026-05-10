@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio BIDAR – Episode Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       ✏️  EDIT EVERYTHING HERE – one place, nothing else to touch
+    ═══════════════════════════════════════════════════════════════ */
+    const CONFIG = {
+
+      /* ── Site / branding ──────────────────────────────────────── */
+      siteUrl:          "Radio.BIDAR.ca",
+      logoText:         "BIDAR",                // text under the logo icon
+
+      /* ── Episode details ──────────────────────────────────────── */
+      episodeNumber:    "118",
+      episodeTime:      "20:00",
+      episodeDate:      "11 می",
+      timezone:         "به وقت شرق کانادا",
+
+      /* ── Main title (split into lines for big display) ────────── */
+      titleLine1:       "حمایت از",
+      titleLine2:       "مهاجران ایرانی",
+      titleLine3:       "برای ورود به بازار کار",
+      titleLine4:       "با خانم مینا",          // set to "" to hide
+
+      /* ── Guest ────────────────────────────────────────────────── */
+      guestName:        "خانم مینا",
+      guestOrg:         "کانون برنامه نویسان ایرانی در کانادا",
+      guestPhotoUrl:    "",                      // URL or leave "" for placeholder
+
+      /* ── Live badge ───────────────────────────────────────────── */
+      liveBadgeText:    "برنامه زنده در تلگرام",
+
+      /* ── Live-show highlights (icons + labels) ────────────────── */
+      liveFeatures: [
+        { icon: "💬", label: "گفتگو و تبادل نظر" },
+        { icon: "❓", label: "پرسش و پاسخ"       },
+        { icon: "🎙️", label: "موضوعات متنوع"     },
+        { icon: "👥", label: "جامعه ای از همراهان"},
+      ],
+      liveSectionTitle: "در برنامه زنده چه خبر است",
+
+      /* ── Bottom / replay section ──────────────────────────────── */
+      replayTitle:   "مشاهده نسخه ضبط شده برنامه:",
+      replaySubtext: "ویدیو و پادکست های برنامه‌ها را در کانال های ما دنبال کنید",
+
+      /* ── Telegram CTA ─────────────────────────────────────────── */
+      ctaText:    "همین حالا عضو کانال شوید!",
+      ctaUrl:     "https://T.me/BIDAR_ca",
+      ctaHandle:  "T.me/BIDAR_ca",
+
+      /* ── Social links (set url:"" to hide) ───────────────────── */
+      socials: {
+        instagram: { url: "https://instagram.com/bidar_ca"  },
+        telegram:  { url: "https://t.me/BIDAR_ca"           },
+        twitter:   { url: "https://x.com/bidar_ca"          },
+      },
+
+      /* ── Platform icons in replay strip ──────────────────────── */
+      platforms: ["youtube", "podcast", "telegram", "bidar"],
+
+      /* ── Colors (tweak without touching the rest) ─────────────── */
+      colors: {
+        bg:           "#141830",
+        bgCard:       "#1c2245",
+        green:        "#7ec83a",
+        greenDark:    "#5a9a20",
+        accent:       "#3ecad4",
+        gold:         "#e8b84b",
+        text:         "#ffffff",
+        textMuted:    "#a0aec0",
+        ctaBg:        "#7ec83a",
+        ctaStrip:     "#b2ddf7",
+      },
+    };
+    /* ═══════════════════════════════════════════════════════════ */
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: #0d1120;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    /* ── Card ── */
+    #card {
+      width: 680px;
+      max-width: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.7);
+      position: relative;
+    }
+
+    /* ── Header ── */
+    .card-header {
+      background: var(--bg);
+      padding: 20px 26px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-url {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 0.03em;
+      direction: ltr;
+    }
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 40px;
+      padding: 5px 14px 5px 10px;
+      font-size: .78rem;
+      color: #fff;
+      direction: rtl;
+    }
+    .live-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #e53e3e;
+      box-shadow: 0 0 8px #e53e3e;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .4; }
+    }
+    .live-text { font-weight: 700; color: #fff; font-size: .75rem; }
+    .tg-icon { font-size: 1rem; }
+
+    /* ── Logo row ── */
+    .logo-row {
+      background: var(--bg);
+      padding: 0 26px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-bubble {
+      background: linear-gradient(135deg, #4a9d2f, #7ec83a);
+      border-radius: 14px;
+      padding: 6px 10px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .logo-bubble span {
+      width: 18px; height: 14px;
+      background: #1c2245;
+      border-radius: 3px;
+      position: relative;
+    }
+    .logo-bubble span::before {
+      content: '●';
+      position: absolute;
+      font-size: 8px;
+      color: var(--green);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .logo-text {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: 2px;
+      direction: ltr;
+    }
+
+    /* ── Hero section ── */
+    .card-hero {
+      background: var(--bg);
+      padding: 0 26px 28px;
+      display: grid;
+      grid-template-columns: 130px 1fr 140px;
+      gap: 0 16px;
+      align-items: center;
+    }
+
+    /* Microphone column */
+    .mic-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .mic-svg { width: 90px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6)); }
+    .mic-label { font-size: .72rem; color: var(--green); text-align: center; line-height: 1.5; }
+
+    /* Title column */
+    .title-col { text-align: center; }
+    .title-col h1 {
+      font-size: 1.65rem;
+      font-weight: 900;
+      line-height: 1.55;
+      color: #fff;
+    }
+    .title-col h1 .green { color: var(--green); }
+
+    /* Guest column */
+    .guest-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .guest-photo-wrap {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      border: 3px solid var(--green);
+      padding: 3px;
+      background: var(--bgCard);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .guest-photo-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .guest-photo-placeholder {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2d3561, #1c2245);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .guest-org {
+      font-size: .67rem;
+      color: var(--green);
+      text-align: center;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    /* ── Episode badge ── */
+    .episode-badge {
+      background: var(--bg);
+      padding: 0 26px 22px;
+      display: flex;
+      justify-content: center;
+    }
+    .badge-pill {
+      background: linear-gradient(135deg, #2a3060, #1e2650);
+      border: 1px solid rgba(126,200,58,.3);
+      border-radius: 50px;
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      direction: rtl;
+    }
+    .badge-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .85rem; color: #fff; font-weight: 700;
+    }
+    .badge-item .icon { font-size: 1rem; }
+    .badge-divider { width: 1px; height: 22px; background: rgba(255,255,255,.15); }
+
+    /* ── Live features strip ── */
+    .features-section {
+      background: var(--bgCard);
+      padding: 18px 26px;
+    }
+    .features-label {
+      font-size: .78rem;
+      color: var(--textMuted);
+      text-align: center;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px; justify-content: center;
+    }
+    .features-label::before,
+    .features-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(126,200,58,.3));
+    }
+    .features-label::before { background: linear-gradient(to left, transparent, rgba(126,200,58,.3)); }
+    .wave-icon { color: var(--green); font-size: .9rem; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .feature-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .feature-icon-wrap {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      background: rgba(255,255,255,.04);
+    }
+    .feature-label { font-size: .68rem; color: var(--textMuted); }
+
+    /* ── Replay strip ── */
+    .replay-section {
+      background: #f5f9ff;
+      padding: 16px 26px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      direction: rtl;
+    }
+    .replay-platforms { display: flex; gap: 10px; align-items: center; }
+    .platform-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .platform-icon.youtube  { background: #ff0000; color: #fff; }
+    .platform-icon.podcast  { background: #9b59b6; color: #fff; }
+    .platform-icon.telegram { background: #0088cc; color: #fff; }
+    .platform-icon.bidar    { background: #5a9a20; color: #fff; font-weight: 900; font-size: .9rem; font-family: sans-serif; }
+
+    .replay-text { flex: 1; }
+    .replay-text strong { font-size: .85rem; color: #1a2040; display: block; margin-bottom: 3px; }
+    .replay-text small   { font-size: .72rem; color: #555; }
+
+    .qr-placeholder {
+      width: 70px; height: 70px;
+      border: 2px dashed #aaa;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .55rem; color: #999; text-align: center;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    /* ── Footer strip ── */
+    .card-footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-cta {
+      background: var(--ctaBg);
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+    .footer-cta-text { font-size: .85rem; font-weight: 900; color: #fff; }
+    .footer-cta-link { font-size: .78rem; color: rgba(255,255,255,.85); font-weight: 600; direction: ltr; }
+    .hand { font-size: 1rem; }
+
+    .footer-socials {
+      background: var(--ctaStrip);
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    .footer-socials-label { font-size: .72rem; color: #2a3a60; font-weight: 600; }
+    .social-icons { display: flex; gap: 12px; align-items: center; }
+    .social-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      text-decoration: none;
+      color: #2a3a60;
+      transition: background .2s;
+    }
+    .social-icon:hover { background: rgba(0,0,0,.25); }
+
+    /* ── Export helper ── */
+    #export-btn {
+      margin-top: 28px;
+      background: #7ec83a;
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 40px;
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(126,200,58,.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    #export-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(126,200,58,.5); }
+    #export-note { margin-top: 10px; font-size: .78rem; color: #666; font-family: sans-serif; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── The card ─────────────────────────────────────────────── -->
+  <div id="card"></div>
+
+  <button id="export-btn" onclick="printCard()">📥 آماده چاپ / Export for Print</button>
+  <p id="export-note">Use browser Print → Save as PDF to export a high-quality image.</p>
+
+  <script>
+    /* ─── Apply CSS vars from CONFIG ─── */
+    const root = document.documentElement;
+    Object.entries(CONFIG.colors).forEach(([k,v]) =>
+      root.style.setProperty(`--${k}`, v)
+    );
+
+    /* ─── Helper: escape HTML ─── */
+    const esc = s => String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+    /* ─── Platform icons map ─── */
+    const platformMeta = {
+      youtube:  { cls:'youtube',  label:'▶' },
+      podcast:  { cls:'podcast',  label:'🎧' },
+      telegram: { cls:'telegram', label:'✈' },
+      bidar:    { cls:'bidar',    label:'B' },
+    };
+
+    /* ─── Social SVG icons ─── */
+    const socialSVG = {
+      instagram: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
+      telegram:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`,
+      twitter:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+    };
+
+    /* ─── Build guest photo ─── */
+    function guestPhoto() {
+      if (CONFIG.guestPhotoUrl) {
+        return `<img src="${esc(CONFIG.guestPhotoUrl)}" alt="${esc(CONFIG.guestName)}" />`;
+      }
+      return `<div class="guest-photo-placeholder">👤</div>`;
+    }
+
+    /* ─── Build features ─── */
+    function featuresHTML() {
+      return CONFIG.liveFeatures.map(f => `
+        <div class="feature-item">
+          <div class="feature-icon-wrap">${f.icon}</div>
+          <span class="feature-label">${esc(f.label)}</span>
+        </div>`).join('');
+    }
+
+    /* ─── Build platform icons ─── */
+    function platformsHTML() {
+      return CONFIG.platforms.map(p => {
+        const m = platformMeta[p] || { cls: p, label: p[0].toUpperCase() };
+        return `<div class="platform-icon ${m.cls}">${m.label}</div>`;
+      }).join('');
+    }
+
+    /* ─── Build social icons ─── */
+    function socialsHTML() {
+      return Object.entries(CONFIG.socials)
+        .filter(([,v]) => v.url)
+        .map(([k,v]) => `
+          <a class="social-icon" href="${esc(v.url)}" target="_blank" title="${k}">
+            ${socialSVG[k] || k[0].toUpperCase()}
+          </a>`).join('');
+    }
+
+    /* ─── Title lines ─── */
+    function titleHTML() {
+      const lines = [
+        CONFIG.titleLine1,
+        CONFIG.titleLine2,
+        CONFIG.titleLine3,
+        CONFIG.titleLine4,
+      ].filter(Boolean);
+      return lines.map((l, i) => {
+        // Lines 2 and last get the green treatment
+        const cls = (i === 1 || i === lines.length - 1) ? 'green' : '';
+        return `<span class="${cls}">${esc(l)}</span>`;
+      }).join('<br>');
+    }
+
+    /* ─── Render card ─── */
+    document.getElementById('card').innerHTML = `
+      <!-- Header -->
+      <div class="card-header">
+        <div class="site-url">${esc(CONFIG.siteUrl)}</div>
+        <div class="live-badge">
+          <span class="tg-icon">✈</span>
+          <span class="live-text">${esc(CONFIG.liveBadgeText)}</span>
+          <span class="live-dot"></span>
+          <strong style="font-size:.7rem;background:#e53e3e;color:#fff;padding:2px 7px;border-radius:4px;">LIVE</strong>
+        </div>
+      </div>
+
+      <!-- Logo -->
+      <div class="logo-row">
+        <div class="logo-bubble">
+          <span></span><span></span>
+        </div>
+        <span class="logo-text">${esc(CONFIG.logoText)}</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="card-hero">
+        <!-- Microphone -->
+        <div class="mic-col">
+          <svg class="mic-svg" viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Rings -->
+            <circle cx="50" cy="70" r="46" stroke="rgba(126,200,58,.15)" stroke-width="1.5" />
+            <circle cx="50" cy="70" r="36" stroke="rgba(126,200,58,.2)" stroke-width="1.5" />
+            <!-- Mic body -->
+            <rect x="32" y="18" width="36" height="58" rx="18" fill="#1e1e2e" stroke="#555" stroke-width="1.5"/>
+            <!-- Mic grille lines -->
+            <line x1="38" y1="38" x2="62" y2="38" stroke="#444" stroke-width="1"/>
+            <line x1="38" y1="45" x2="62" y2="45" stroke="#444" stroke-width="1"/>
+            <line x1="38" y1="52" x2="62" y2="52" stroke="#444" stroke-width="1"/>
+            <line x1="38" y1="59" x2="62" y2="59" stroke="#444" stroke-width="1"/>
+            <!-- Stand arc -->
+            <path d="M26 76 Q26 106 50 106 Q74 106 74 76" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- Stand pole -->
+            <line x1="50" y1="106" x2="50" y2="128" stroke="#666" stroke-width="3" stroke-linecap="round"/>
+            <!-- Base -->
+            <line x1="34" y1="128" x2="66" y2="128" stroke="#666" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="mic-label">${esc(CONFIG.timezone)}</div>
+        </div>
+
+        <!-- Title -->
+        <div class="title-col">
+          <h1>${titleHTML()}</h1>
+        </div>
+
+        <!-- Guest -->
+        <div class="guest-col">
+          <div class="guest-photo-wrap">${guestPhoto()}</div>
+          <div class="guest-org">${esc(CONFIG.guestOrg)}</div>
+        </div>
+      </div>
+
+      <!-- Episode badge -->
+      <div class="episode-badge">
+        <div class="badge-pill">
+          <div class="badge-item"><span class="icon">📅</span>${esc(CONFIG.episodeDate)}</div>
+          <div class="badge-divider"></div>
+          <div class="badge-item"><span class="icon">🕗</span>${esc(CONFIG.episodeTime)}</div>
+          <div class="badge-divider"></div>
+          <div class="badge-item"><span class="icon">🎙️</span>ایپزود ${esc(CONFIG.episodeNumber)}</div>
+        </div>
+      </div>
+
+      <!-- Live features -->
+      <div class="features-section">
+        <div class="features-label">
+          <span class="wave-icon">〰</span>
+          ${esc(CONFIG.liveSectionTitle)}
+          <span class="wave-icon">〰</span>
+        </div>
+        <div class="features-grid">${featuresHTML()}</div>
+      </div>
+
+      <!-- Replay strip -->
+      <div class="replay-section">
+        <div class="replay-platforms">${platformsHTML()}</div>
+        <div class="replay-text">
+          <strong>${esc(CONFIG.replayTitle)}</strong>
+          <small>${esc(CONFIG.replaySubtext)}</small>
+        </div>
+        <div class="qr-placeholder">QR<br>Code<br>اینجا</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <div class="footer-cta">
+          <div style="font-size:1.2rem">👆</div>
+          <div class="footer-cta-text">${esc(CONFIG.ctaText)}</div>
+          <div class="footer-cta-link">${esc(CONFIG.ctaHandle)}</div>
+        </div>
+        <div class="footer-socials">
+          <div class="footer-socials-label">ما را در رسانه های دیگر دنبال کنید</div>
+          <div class="social-icons">${socialsHTML()}</div>
+        </div>
+      </div>
+    `;
+  </script>
+
+  <script>
+    function printCard() {
+      const card = document.getElementById('card');
+      const w = window.open('', '_blank');
+      w.document.write(`<!DOCTYPE html><html dir="rtl"><head>
+        <meta charset="UTF-8"/>
+        <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+        <style>
+          body{margin:0;padding:20px;background:#0d1120;display:flex;justify-content:center;font-family:'Vazirmatn',sans-serif;}
+          @media print{body{background:#0d1120;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+        </style>
+      </head><body>${card.outerHTML}<script>window.onload=()=>{window.print();}<\/script></body></html>`);
+      w.document.close();
+    }
+  </script>
+
+</body>
+</html>
