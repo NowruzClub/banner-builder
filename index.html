@@ -34,6 +34,7 @@
       guestName:        "خانم مینا",
       guestOrg:         "کانون برنامه نویسان ایرانی در کانادا",
       guestPhotoUrl:    "",                      // URL or leave "" for placeholder
+      guestUrl:         "",                      // LinkedIn / personal URL (leave "" to disable)
 
       /* ── Live badge ───────────────────────────────────────────── */
       liveBadgeText:    "برنامه زنده در تلگرام",
@@ -217,16 +218,46 @@
 
     /* Guest column */
     .guest-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .guest-photo-link {
+      display: block;
+      border-radius: 50%;
+      text-decoration: none;
+      position: relative;
+      cursor: default;
+    }
+    .guest-photo-link[href] { cursor: pointer; }
+    .guest-photo-link[href]:hover .guest-photo-wrap {
+      box-shadow: 0 0 0 3px var(--green), 0 0 0 6px rgba(126,200,58,.25), 0 8px 24px rgba(0,0,0,.5);
+    }
+    .guest-photo-link[href]::after {
+      content: '↗';
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 22px; height: 22px;
+      background: var(--green);
+      border-radius: 50%;
+      font-size: .75rem;
+      color: #fff;
+      font-weight: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.4);
+    }
+    .guest-photo-link[href]:hover::after { display: flex; }
     .guest-photo-wrap {
       width: 110px; height: 110px;
       border-radius: 50%;
-      border: 3px solid var(--green);
-      padding: 3px;
-      background: var(--bgCard);
+      box-shadow: 0 0 0 3px var(--green), 0 6px 20px rgba(0,0,0,.5);
       overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
+      transition: box-shadow .25s;
     }
-    .guest-photo-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .guest-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
     .guest-photo-placeholder {
       width: 100%; height: 100%;
       border-radius: 50%;
@@ -438,13 +469,16 @@
        Priority: 1) speaker.png (same folder as the HTML file)
                  2) CONFIG.guestPhotoUrl  (if set)
                  3) silhouette placeholder
+       Wraps in a clickable link if CONFIG.guestUrl is set.
     ─────────────────────────────────────────────────────────── */
     function guestPhoto() {
       const fallback = CONFIG.guestPhotoUrl
-        ? `this.onerror=function(){this.onerror=null;this.parentNode.innerHTML='<div class=\\"guest-photo-placeholder\\">👤</div>';};this.src='${CONFIG.guestPhotoUrl}';`
-        : `this.onerror=null;this.parentNode.innerHTML='<div class=\\"guest-photo-placeholder\\">👤</div>';`;
+        ? `this.onerror=function(){this.onerror=null;this.parentNode.innerHTML='<div class=\"guest-photo-placeholder\">👤</div>';};this.src='${CONFIG.guestPhotoUrl}';`
+        : `this.onerror=null;this.parentNode.innerHTML='<div class=\"guest-photo-placeholder\">👤</div>';`;
 
-      return `<img src="speaker.png" alt="${esc(CONFIG.guestName)}" onerror="${fallback}" />`;
+      const img = `<img src="speaker.png" alt="${esc(CONFIG.guestName)}" onerror="${fallback}" />`;
+      const href = CONFIG.guestUrl ? ` href="${esc(CONFIG.guestUrl)}" target="_blank" rel="noopener"` : '';
+      return `<a class="guest-photo-link"${href}><div class="guest-photo-wrap">${img}</div></a>`;
     }
 
     /* ─── Build features ─── */
@@ -542,7 +576,7 @@
 
         <!-- Guest -->
         <div class="guest-col">
-          <div class="guest-photo-wrap">${guestPhoto()}</div>
+          ${guestPhoto()}
           <div class="guest-org">${esc(CONFIG.guestOrg)}</div>
         </div>
       </div>
