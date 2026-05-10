@@ -3,221 +3,267 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radio BIDAR – Episode Card</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <title>Radio BIDAR Live Banner</title>
 
-  <script>
-    /* ═══════════════════════════════════════════════════════════════
-       ✏️  EDIT EVERYTHING HERE – one place, nothing else to touch
-    ═══════════════════════════════════════════════════════════════ */
-    const CONFIG = {
+  <!-- Config MUST load before anything else -->
+  <script src="config.js"></script>
 
-      /* ── Site / branding ──────────────────────────────────────── */
-      siteUrl:          "Radio.BIDAR.ca",
-      logoText:         "BIDAR",                // text under the logo icon
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-      /* ── Episode details ──────────────────────────────────────── */
-      episodeNumber:    "118",
-      episodeTime:      "20:00",
-      episodeDate:      "11 می",
-      timezone:         "به وقت شرق کانادا",
-
-      /* ── Main title (split into lines for big display) ────────── */
-      titleLine1:       "حمایت از",
-      titleLine2:       "مهاجران ایرانی",
-      titleLine3:       "برای ورود به بازار کار",
-      titleLine4:       "با خانم مینا",          // set to "" to hide
-
-      /* ── Guest ────────────────────────────────────────────────── */
-      guestName:        "خانم مینا",
-      guestOrg:         "کانون برنامه نویسان ایرانی در کانادا",
-      guestPhotoUrl:    "",                      // URL or leave "" for placeholder
-      guestUrl:         "",                      // LinkedIn / personal URL (leave "" to disable)
-
-      /* ── Live badge ───────────────────────────────────────────── */
-      liveBadgeText:    "برنامه زنده در تلگرام",
-
-      /* ── Live-show highlights (icons + labels) ────────────────── */
-      liveFeatures: [
-        { icon: "💬", label: "گفتگو و تبادل نظر" },
-        { icon: "❓", label: "پرسش و پاسخ"       },
-        { icon: "🎙️", label: "موضوعات متنوع"     },
-        { icon: "👥", label: "جامعه ای از همراهان"},
-      ],
-      liveSectionTitle: "در برنامه زنده چه خبر است",
-
-      /* ── Bottom / replay section ──────────────────────────────── */
-      replayTitle:   "مشاهده نسخه ضبط شده برنامه:",
-      replaySubtext: "ویدیو و پادکست های برنامه‌ها را در کانال های ما دنبال کنید",
-
-      /* ── Telegram CTA ─────────────────────────────────────────── */
-      ctaText:    "همین حالا عضو کانال شوید!",
-      ctaUrl:     "https://T.me/BIDAR_ca",
-      ctaHandle:  "T.me/BIDAR_ca",
-
-      /* ── Social links (set url:"" to hide) ───────────────────── */
-      socials: {
-        instagram: { url: "https://instagram.com/bidar_ca"  },
-        telegram:  { url: "https://t.me/BIDAR_ca"           },
-        twitter:   { url: "https://x.com/bidar_ca"          },
-      },
-
-      /* ── Platform icons in replay strip ──────────────────────── */
-      platforms: ["youtube", "podcast", "telegram", "bidar"],
-
-      /* ── Colors (tweak without touching the rest) ─────────────── */
-      colors: {
-        bg:           "#141830",
-        bgCard:       "#1c2245",
-        green:        "#7ec83a",
-        greenDark:    "#5a9a20",
-        accent:       "#3ecad4",
-        gold:         "#e8b84b",
-        text:         "#ffffff",
-        textMuted:    "#a0aec0",
-        ctaBg:        "#7ec83a",
-        ctaStrip:     "#b2ddf7",
-      },
-    };
-    /* ═══════════════════════════════════════════════════════════ */
-  </script>
+  <!-- QR Code generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- PNG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Original ChatGPT design – untouched ── */
+    :root {
+      --bg-dark:  #021327;
+      --bg-dark-2:#062746;
+      --accent:   #f5b52d;
+      --cyan:     #3cc7de;
+      --cyan-soft:#77e5f7;
+      --text:     #ffffff;
+      --muted:    #c9d8e6;
+      --border:   rgba(255,255,255,0.18);
+      --shadow:   0 12px 30px rgba(0,0,0,0.25);
+      --radius:   28px;
+    }
+
+    * { box-sizing: border-box; }
 
     body {
+      margin: 0;
+      background: #eef2f6;
       font-family: 'Vazirmatn', sans-serif;
-      background: #0d1120;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
-      min-height: 100vh;
+      padding: 24px;
     }
 
-    /* ── Card ── */
-    #card {
-      width: 680px;
+    .poster {
+      width: 850px;
       max-width: 100%;
-      border-radius: 22px;
+      background: #fff;
       overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0,0,0,.7);
-      position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
 
-    /* ── Header ── */
-    .card-header {
-      background: var(--bg);
-      padding: 20px 26px 10px;
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 28px 28px 20px;
+      background:
+        radial-gradient(circle at 70% 28%, rgba(40,160,255,0.35), transparent 30%),
+        radial-gradient(circle at 72% 30%, rgba(80,200,255,0.18), transparent 18%),
+        linear-gradient(135deg, #021327 0%, #04254a 100%);
+      color: var(--text);
+      min-height: 760px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -80px;
+      width: 220px;
+      height: 220px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .topbar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-    }
-    .site-url {
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 0.03em;
+      align-items: flex-start;
       direction: ltr;
+      position: relative;
+      z-index: 2;
     }
-    .live-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 40px;
-      padding: 5px 14px 5px 10px;
-      font-size: .78rem;
-      color: #fff;
-      direction: rtl;
-    }
-    .live-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #e53e3e;
-      box-shadow: 0 0 8px #e53e3e;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1; }
-      50%      { opacity: .4; }
-    }
-    .live-text { font-weight: 700; color: #fff; font-size: .75rem; }
-    .tg-icon { font-size: 1rem; }
 
-    /* ── Logo row ── */
-    .logo-row {
-      background: var(--bg);
-      padding: 0 26px 18px;
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .brand-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #3cd6ea, #f5b52d);
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+      font-weight: 800;
+      color: #07233d;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 14px;
+      color: #8ee9f7;
+    }
+
+    .telegram-pill {
+      direction: rtl;
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(4px);
+      font-size: 14px;
+      color: #dfefff;
     }
-    .logo-bubble {
-      background: linear-gradient(135deg, #4a9d2f, #7ec83a);
-      border-radius: 14px;
-      padding: 6px 10px;
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-    .logo-bubble span {
-      width: 18px; height: 14px;
-      background: #1c2245;
-      border-radius: 3px;
+
+    .hero-grid {
       position: relative;
-    }
-    .logo-bubble span::before {
-      content: '●';
-      position: absolute;
-      font-size: 8px;
-      color: var(--green);
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-    }
-    .logo-text {
-      font-size: 1rem;
-      font-weight: 900;
-      color: var(--green);
-      letter-spacing: 2px;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      margin-top: 34px;
       direction: ltr;
     }
 
-    /* ── Hero section ── */
-    .card-hero {
-      background: var(--bg);
-      padding: 0 26px 28px;
-      display: grid;
-      grid-template-columns: 130px 1fr 140px;
-      gap: 0 16px;
-      align-items: center;
+    .hero-copy {
+      direction: rtl;
+      padding-top: 80px;
     }
 
-    /* Microphone column */
-    .mic-col {
+    .hero-copy h2 {
+      margin: 0;
+      font-size: 62px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .hero-copy .accent { color: var(--accent); }
+
+    .hero-copy .line {
+      width: 54px;
+      height: 4px;
+      background: #3fd6e8;
+      border-radius: 999px;
+      margin: 28px 0;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      color: #d6e7f4;
+      font-size: 28px;
+      line-height: 2;
+      font-weight: 500;
+    }
+
+    .telegram-card {
+      margin-top: 34px;
+      width: 100%;
+      max-width: 360px;
+      border-radius: 24px;
+      border: 2px solid rgba(75,220,255,0.6);
+      padding: 20px;
+      background: rgba(9,33,58,0.9);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    .telegram-card h3 {
+      margin: 0;
+      color: #74f2ff;
+      font-size: 34px;
+      font-weight: 800;
+    }
+
+    .telegram-card p {
+      margin: 8px 0 16px;
+      font-size: 20px;
+      color: #dbe9f6;
+      line-height: 1.7;
+    }
+
+    .telegram-link {
+      display: inline-block;
+      direction: ltr;
+      background: #10253f;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 10px 16px;
+      font-size: 24px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hero-visual {
+      direction: rtl;
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      padding-top: 20px;
     }
-    .mic-svg { width: 90px; filter: drop-shadow(0 10px 20px rgba(0,0,0,.6)); }
-    .mic-label { font-size: .72rem; color: var(--green); text-align: center; line-height: 1.5; }
 
-    /* Title column */
-    .title-col { text-align: center; }
-    .title-col h1 {
-      font-size: 1.65rem;
-      font-weight: 900;
-      line-height: 1.55;
+    .mic-ring {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(60,200,255,0.18) 0%, rgba(60,200,255,0.08) 40%, transparent 70%),
+        radial-gradient(circle, transparent 58%, rgba(70,180,255,0.2) 60%, transparent 62%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mic { font-size: 120px; filter: drop-shadow(0 12px 24px rgba(0,0,0,0.45)); }
+
+    .live-strip {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .live-badge {
+      background: #e53935;
       color: #fff;
+      padding: 10px 18px;
+      direction: ltr;
     }
-    .title-col h1 .green { color: var(--green); }
 
-    /* Guest column */
-    .guest-col { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .live-text {
+      background: linear-gradient(90deg, #3cc7de, #65d4c0);
+      color: #fff;
+      padding: 10px 18px;
+    }
+
+    /* ── Guest photo (new) ── */
+    .guest-block {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
     .guest-photo-link {
       display: block;
       border-radius: 50%;
@@ -225,440 +271,520 @@
       position: relative;
       cursor: default;
     }
+
     .guest-photo-link[href] { cursor: pointer; }
+
     .guest-photo-link[href]:hover .guest-photo-wrap {
-      box-shadow: 0 0 0 3px var(--green), 0 0 0 6px rgba(126,200,58,.25), 0 8px 24px rgba(0,0,0,.5);
+      box-shadow: 0 0 0 3px var(--accent), 0 0 0 6px rgba(245,181,45,.25), 0 8px 24px rgba(0,0,0,.5);
     }
+
     .guest-photo-link[href]::after {
       content: '↗';
       position: absolute;
       bottom: 2px; right: 2px;
       width: 22px; height: 22px;
-      background: var(--green);
+      background: var(--accent);
       border-radius: 50%;
       font-size: .75rem;
-      color: #fff;
+      color: #021327;
       font-weight: 900;
       display: none;
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 6px rgba(0,0,0,.4);
     }
+
     .guest-photo-link[href]:hover::after { display: flex; }
+
     .guest-photo-wrap {
-      width: 110px; height: 110px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      box-shadow: 0 0 0 3px var(--green), 0 6px 20px rgba(0,0,0,.5);
+      box-shadow: 0 0 0 3px var(--accent), 0 6px 20px rgba(0,0,0,.5);
       overflow: hidden;
       transition: box-shadow .25s;
     }
+
     .guest-photo-wrap img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
     }
+
     .guest-photo-placeholder {
       width: 100%; height: 100%;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2d3561, #1c2245);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem;
+      background: linear-gradient(135deg, #062746, #021327);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
     }
-    .guest-org {
-      font-size: .67rem;
-      color: var(--green);
+
+    .guest-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #74f2ff;
+      text-align: center;
+    }
+
+    .guest-org-text {
+      font-size: 13px;
+      color: #8ee9f7;
       text-align: center;
       line-height: 1.6;
-      font-weight: 600;
     }
 
-    /* ── Episode badge ── */
-    .episode-badge {
-      background: var(--bg);
-      padding: 0 26px 22px;
-      display: flex;
-      justify-content: center;
+    .schedule {
+      margin-top: 16px;
+      width: 100%;
+      background: rgba(7,22,39,0.92);
+      border-radius: 22px;
+      padding: 18px 20px;
+      color: #fff;
     }
-    .badge-pill {
-      background: linear-gradient(135deg, #2a3060, #1e2650);
-      border: 1px solid rgba(126,200,58,.3);
-      border-radius: 50px;
-      padding: 10px 28px;
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      direction: rtl;
-    }
-    .badge-item {
-      display: flex; align-items: center; gap: 6px;
-      font-size: .85rem; color: #fff; font-weight: 700;
-    }
-    .badge-item .icon { font-size: 1rem; }
-    .badge-divider { width: 1px; height: 22px; background: rgba(255,255,255,.15); }
 
-    /* ── Live features strip ── */
-    .features-section {
-      background: var(--bgCard);
-      padding: 18px 26px;
-    }
-    .features-label {
-      font-size: .78rem;
-      color: var(--textMuted);
+    .schedule h4 {
+      margin: 0 0 16px;
+      color: #f4c34f;
+      font-size: 24px;
+      font-weight: 700;
       text-align: center;
-      margin-bottom: 16px;
-      display: flex; align-items: center; gap: 10px; justify-content: center;
     }
-    .features-label::before,
-    .features-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(126,200,58,.3));
-    }
-    .features-label::before { background: linear-gradient(to left, transparent, rgba(126,200,58,.3)); }
-    .wave-icon { color: var(--green); font-size: .9rem; }
 
-    .features-grid {
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: center;
+    }
+
+    .schedule-item {
+      border-left: 1px dashed rgba(255,255,255,0.15);
+      padding: 0 8px;
+    }
+
+    .schedule-item:last-child { border-left: none; }
+    .schedule-item .icon { font-size: 26px; margin-bottom: 6px; }
+    .schedule-item .label { color: #9edbf1; font-size: 15px; font-weight: 700; }
+    .schedule-item .value { margin-top: 6px; font-size: 16px; color: #fff; }
+
+    /* WHITE SECTIONS */
+    .section {
+      background: #f9fbfd;
+      padding: 24px 28px;
+      border-top: 1px solid #e4edf5;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d7e4ee;
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 34px;
+      font-weight: 800;
+      color: #183650;
+      margin: 0 0 24px;
+    }
+
+    .features {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 20px;
       text-align: center;
     }
-    .feature-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .feature-icon-wrap {
-      width: 50px; height: 50px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,.15);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      background: rgba(255,255,255,.04);
-    }
-    .feature-label { font-size: .68rem; color: var(--textMuted); }
 
-    /* ── Replay strip ── */
-    .replay-section {
-      background: #f5f9ff;
-      padding: 16px 26px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      direction: rtl;
-    }
-    .replay-platforms { display: flex; gap: 10px; align-items: center; }
-    .platform-icon {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-    }
-    .platform-icon.youtube  { background: #ff0000; color: #fff; }
-    .platform-icon.podcast  { background: #9b59b6; color: #fff; }
-    .platform-icon.telegram { background: #0088cc; color: #fff; }
-    .platform-icon.bidar    { background: #5a9a20; color: #fff; font-weight: 900; font-size: .9rem; font-family: sans-serif; }
-
-    .replay-text { flex: 1; }
-    .replay-text strong { font-size: .85rem; color: #1a2040; display: block; margin-bottom: 3px; }
-    .replay-text small   { font-size: .72rem; color: #555; }
-
-    .qr-placeholder {
-      width: 70px; height: 70px;
-      border: 2px dashed #aaa;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .55rem; color: #999; text-align: center;
-      flex-shrink: 0;
-      line-height: 1.4;
+    .feature {
+      padding: 10px 12px;
+      border-left: 1px dashed #d8e5ef;
     }
 
-    /* ── Footer strip ── */
-    .card-footer {
+    .feature:last-child { border-left: none; }
+    .feature .icon { font-size: 44px; color: #1ea7c5; }
+
+    .feature h5 {
+      margin: 8px 0;
+      font-size: 24px;
+      color: #163550;
+    }
+
+    .feature p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #536c80;
+    }
+
+    .platforms {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 120px;
+      gap: 24px;
+      align-items: center;
     }
-    .footer-cta {
-      background: var(--ctaBg);
-      padding: 14px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 3px;
-    }
-    .footer-cta-text { font-size: .85rem; font-weight: 900; color: #fff; }
-    .footer-cta-link { font-size: .78rem; color: rgba(255,255,255,.85); font-weight: 600; direction: ltr; }
-    .hand { font-size: 1rem; }
 
-    .footer-socials {
-      background: var(--ctaStrip);
-      padding: 14px 20px;
+    .platform-icons {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 18px;
+      margin-top: 16px;
+      font-size: 18px;
+      color: #39566f;
+    }
+
+    .platform-item {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .platform-item span:first-child { font-size: 42px; }
+
+    /* QR Code */
+    .qr-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 8px;
     }
-    .footer-socials-label { font-size: .72rem; color: #2a3a60; font-weight: 600; }
-    .social-icons { display: flex; gap: 12px; align-items: center; }
-    .social-icon {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: rgba(0,0,0,.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-      text-decoration: none;
-      color: #2a3a60;
-      transition: background .2s;
-    }
-    .social-icon:hover { background: rgba(0,0,0,.25); }
 
-    /* ── Export helper ── */
+    #qr-code canvas,
+    #qr-code img {
+      border: 6px solid #fff;
+      outline: 1px solid #d7e4ee;
+      display: block;
+    }
+
+    .qr-label {
+      font-size: 16px;
+      color: #567086;
+      text-align: center;
+    }
+
+    /* FOOTER */
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      direction: ltr;
+    }
+
+    .footer-left,
+    .footer-right {
+      padding: 28px;
+      color: #fff;
+    }
+
+    .footer-left {
+      background: linear-gradient(135deg, #021327, #062746);
+      direction: rtl;
+    }
+
+    .footer-right {
+      background: linear-gradient(135deg, #1f9fb4, #5bcfc7);
+      direction: rtl;
+      text-align: center;
+    }
+
+    .footer h4 {
+      margin: 0 0 12px;
+      font-size: 32px;
+    }
+
+    .footer p {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.8;
+    }
+
+    .socials {
+      margin-top: 14px;
+      font-size: 22px;
+      color: #c9dff1;
+    }
+
+    /* ── Export button (outside poster) ── */
     #export-btn {
-      margin-top: 28px;
-      background: #7ec83a;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #1f9fb4, #3cc7de);
       color: #fff;
       border: none;
-      padding: 12px 32px;
+      padding: 13px 36px;
       border-radius: 40px;
       font-family: 'Vazirmatn', sans-serif;
-      font-size: .95rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(126,200,58,.4);
+      box-shadow: 0 6px 20px rgba(60,199,222,0.4);
       transition: transform .15s, box-shadow .15s;
     }
-    #export-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(126,200,58,.5); }
-    #export-note { margin-top: 10px; font-size: .78rem; color: #666; font-family: sans-serif; }
+
+    #export-btn:hover  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(60,199,222,0.5); }
+    #export-btn:disabled { opacity: .6; cursor: wait; transform: none; }
+
+    #export-note {
+      margin-top: 8px;
+      font-size: .8rem;
+      color: #888;
+      font-family: sans-serif;
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 0; }
+      .poster { width: 100%; }
+      .hero-grid,
+      .features,
+      .platforms,
+      .footer { grid-template-columns: 1fr; }
+      .hero-copy h2 { font-size: 42px; }
+      .hero-copy p  { font-size: 22px; }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- ── The card ─────────────────────────────────────────────── -->
-  <div id="card"></div>
+  <div class="poster" id="poster">
+
+    <!-- ════════════════ HERO ════════════════ -->
+    <section class="hero">
+
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-logo" id="logo-letter"></div>
+          <div>
+            <h1 id="site-url"></h1>
+            <p  id="site-tagline"></p>
+          </div>
+        </div>
+        <div class="telegram-pill">🔔 <span id="live-badge-label"></span></div>
+      </div>
+
+      <div class="hero-grid">
+
+        <!-- Left: copy -->
+        <div class="hero-copy">
+          <h2>
+            <span id="hero-line1"></span><br>
+            <span class="accent" id="hero-line-accent"></span><br>
+            <span id="hero-line2"></span>
+          </h2>
+          <div class="line"></div>
+          <p id="hero-desc"></p>
+
+          <div class="telegram-card">
+            <h3 id="cta-join-title"></h3>
+            <p  id="cta-join-subtext"></p>
+            <a  id="telegram-link" class="telegram-link" target="_blank" rel="noopener"></a>
+          </div>
+        </div>
+
+        <!-- Right: visual -->
+        <div class="hero-visual">
+
+          <div class="mic-ring">
+            <div class="mic">🎙️</div>
+          </div>
+
+          <div class="live-strip">
+            <div class="live-badge">LIVE</div>
+            <div class="live-text" id="live-strip-label"></div>
+          </div>
+
+          <!-- Guest photo block -->
+          <div class="guest-block" id="guest-block">
+            <!-- Rendered by JS -->
+          </div>
+
+          <div class="schedule">
+            <h4 id="schedule-title"></h4>
+            <div class="schedule-grid" id="schedule-grid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ FEATURES ════════════════ -->
+    <section class="section">
+      <div class="card">
+        <h3 class="section-title" id="features-title"></h3>
+        <div class="features" id="features-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ PLATFORMS ════════════════ -->
+    <section class="section">
+      <div class="card platforms">
+        <div>
+          <h3 class="section-title" style="text-align:right; margin-bottom:8px;" id="platforms-title"></h3>
+          <p style="margin:0; font-size:20px; color:#5c7488;" id="platforms-subtext"></p>
+          <div class="platform-icons" id="platforms-grid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+        <div class="qr-wrap">
+          <div id="qr-code"></div>
+          <div class="qr-label" id="qr-label"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════ FOOTER ════════════════ -->
+    <footer class="footer">
+      <div class="footer-left">
+        <h4 id="follow-us-title"></h4>
+        <p  id="social-handle"></p>
+        <div class="socials" id="socials-line"></div>
+      </div>
+      <div class="footer-right">
+        <h4 id="bell-title"></h4>
+        <p  id="bell-subtext"></p>
+      </div>
+    </footer>
+
+  </div><!-- /.poster -->
 
   <button id="export-btn" onclick="exportPNG()">📥 دانلود PNG</button>
-  <p id="export-note">کلیک کنید تا تصویر با کیفیت بالا دانلود شود · Click to download a high-res PNG</p>
+  <p id="export-note">کلیک کنید تا تصویر با کیفیت بالا دانلود شود</p>
 
+  <!-- ════════════════ RENDER SCRIPT ════════════════ -->
   <script>
-    /* ─── Apply CSS vars from CONFIG ─── */
-    const root = document.documentElement;
-    Object.entries(CONFIG.colors).forEach(([k,v]) =>
-      root.style.setProperty(`--${k}`, v)
-    );
-
-    /* ─── Helper: escape HTML ─── */
     const esc = s => String(s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;')
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-    /* ─── Platform icons map ─── */
-    const platformMeta = {
-      youtube:  { cls:'youtube',  label:'▶' },
-      podcast:  { cls:'podcast',  label:'🎧' },
-      telegram: { cls:'telegram', label:'✈' },
-      bidar:    { cls:'bidar',    label:'B' },
-    };
+    function set(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = val;
+    }
 
-    /* ─── Social SVG icons ─── */
-    const socialSVG = {
-      instagram: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
-      telegram:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`,
-      twitter:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
-    };
+    /* ── Simple text fields ── */
+    set('logo-letter',      esc(CONFIG.logoLetter));
+    set('site-url',         esc(CONFIG.siteUrl));
+    set('site-tagline',     esc(CONFIG.siteTagline));
+    set('live-badge-label', esc(CONFIG.liveBadgeLabel));
+    set('live-strip-label', esc(CONFIG.liveBadgeLabel));
+    set('hero-line1',       esc(CONFIG.heroLine1));
+    set('hero-line-accent', esc(CONFIG.heroLineAccent));
+    set('hero-line2',       esc(CONFIG.heroLine2));
+    set('hero-desc',        CONFIG.heroDesc.map(esc).join('<br>'));
+    set('cta-join-title',   esc(CONFIG.ctaJoinTitle));
+    set('cta-join-subtext', esc(CONFIG.ctaJoinSubtext));
+    set('schedule-title',   esc(CONFIG.scheduleTitle));
+    set('features-title',   esc(CONFIG.featuresSectionTitle));
+    set('platforms-title',  esc(CONFIG.platformsSectionTitle));
+    set('platforms-subtext',esc(CONFIG.platformsSectionSubtext));
+    set('qr-label',         esc(CONFIG.qrLabel));
+    set('follow-us-title',  esc(CONFIG.followUsTitle));
+    set('social-handle',    esc(CONFIG.socialHandle));
+    set('socials-line',     esc(CONFIG.socialsLine));
+    set('bell-title',       esc(CONFIG.bellTitle));
+    set('bell-subtext',     esc(CONFIG.bellSubtext));
 
-    /* ─── Build guest photo ───────────────────────────────────────
-       Priority: 1) speaker.png (same folder as the HTML file)
-                 2) CONFIG.guestPhotoUrl  (if set)
-                 3) silhouette placeholder
-       Wraps in a clickable link if CONFIG.guestUrl is set.
-    ─────────────────────────────────────────────────────────── */
-    function guestPhoto() {
+    /* ── Telegram link ── */
+    const tgEl = document.getElementById('telegram-link');
+    tgEl.href        = CONFIG.telegramLiveUrl;
+    tgEl.textContent = CONFIG.telegramHandle;
+
+    /* ── Guest photo ─────────────────────────────────────────────
+       Priority: speaker.png → CONFIG.guestPhotoUrl → placeholder  */
+    function buildGuestBlock() {
       const fallback = CONFIG.guestPhotoUrl
-        ? `this.onerror=function(){this.onerror=null;this.parentNode.innerHTML='<div class=\"guest-photo-placeholder\">👤</div>';};this.src='${CONFIG.guestPhotoUrl}';`
-        : `this.onerror=null;this.parentNode.innerHTML='<div class=\"guest-photo-placeholder\">👤</div>';`;
+        ? `this.onerror=function(){this.onerror=null;this.parentNode.innerHTML='<div class=\\"guest-photo-placeholder\\">👤</div>';};this.src='${CONFIG.guestPhotoUrl}';`
+        : `this.onerror=null;this.parentNode.innerHTML='<div class=\\"guest-photo-placeholder\\">👤</div>';`;
 
-      const img = `<img src="speaker.png" alt="${esc(CONFIG.guestName)}" onerror="${fallback}" />`;
-      const href = CONFIG.guestUrl ? ` href="${esc(CONFIG.guestUrl)}" target="_blank" rel="noopener"` : '';
-      return `<a class="guest-photo-link"${href}><div class="guest-photo-wrap">${img}</div></a>`;
+      const img  = `<img src="speaker.png" alt="${esc(CONFIG.guestName)}" onerror="${fallback}" />`;
+      const href = CONFIG.guestUrl
+        ? ` href="${esc(CONFIG.guestUrl)}" target="_blank" rel="noopener"`
+        : '';
+
+      document.getElementById('guest-block').innerHTML = `
+        <a class="guest-photo-link"${href}>
+          <div class="guest-photo-wrap">${img}</div>
+        </a>
+        <div class="guest-name">${esc(CONFIG.guestName)}</div>
+        <div class="guest-org-text">${esc(CONFIG.guestOrg)}</div>
+      `;
     }
+    buildGuestBlock();
 
-    /* ─── Build features ─── */
-    function featuresHTML() {
-      return CONFIG.liveFeatures.map(f => `
-        <div class="feature-item">
-          <div class="feature-icon-wrap">${f.icon}</div>
-          <span class="feature-label">${esc(f.label)}</span>
+    /* ── Schedule items ── */
+    document.getElementById('schedule-grid').innerHTML =
+      CONFIG.scheduleItems.map(item => `
+        <div class="schedule-item">
+          <div class="icon">${item.icon}</div>
+          <div class="label">${esc(item.label)}</div>
+          <div class="value">${esc(item.value)}</div>
         </div>`).join('');
-    }
 
-    /* ─── Build platform icons ─── */
-    function platformsHTML() {
-      return CONFIG.platforms.map(p => {
-        const m = platformMeta[p] || { cls: p, label: p[0].toUpperCase() };
-        return `<div class="platform-icon ${m.cls}">${m.label}</div>`;
-      }).join('');
-    }
+    /* ── Feature cards ── */
+    document.getElementById('features-grid').innerHTML =
+      CONFIG.features.map(f => `
+        <div class="feature">
+          <div class="icon">${f.icon}</div>
+          <h5>${esc(f.title)}</h5>
+          <p>${esc(f.desc)}</p>
+        </div>`).join('');
 
-    /* ─── Build social icons ─── */
-    function socialsHTML() {
-      return Object.entries(CONFIG.socials)
-        .filter(([,v]) => v.url)
-        .map(([k,v]) => `
-          <a class="social-icon" href="${esc(v.url)}" target="_blank" title="${k}">
-            ${socialSVG[k] || k[0].toUpperCase()}
-          </a>`).join('');
-    }
+    /* ── Platform icons ── */
+    document.getElementById('platforms-grid').innerHTML =
+      CONFIG.platforms.map(p => `
+        <div class="platform-item">
+          <span>${p.icon}</span>
+          <span>${esc(p.label)}</span>
+        </div>`).join('');
 
-    /* ─── Title lines ─── */
-    function titleHTML() {
-      const lines = [
-        CONFIG.titleLine1,
-        CONFIG.titleLine2,
-        CONFIG.titleLine3,
-        CONFIG.titleLine4,
-      ].filter(Boolean);
-      return lines.map((l, i) => {
-        // Lines 2 and last get the green treatment
-        const cls = (i === 1 || i === lines.length - 1) ? 'green' : '';
-        return `<span class="${cls}">${esc(l)}</span>`;
-      }).join('<br>');
-    }
-
-    /* ─── Render card ─── */
-    document.getElementById('card').innerHTML = `
-      <!-- Header -->
-      <div class="card-header">
-        <div class="site-url">${esc(CONFIG.siteUrl)}</div>
-        <div class="live-badge">
-          <span class="tg-icon">✈</span>
-          <span class="live-text">${esc(CONFIG.liveBadgeText)}</span>
-          <span class="live-dot"></span>
-          <strong style="font-size:.7rem;background:#e53e3e;color:#fff;padding:2px 7px;border-radius:4px;">LIVE</strong>
-        </div>
-      </div>
-
-      <!-- Logo -->
-      <div class="logo-row">
-        <div class="logo-bubble">
-          <span></span><span></span>
-        </div>
-        <span class="logo-text">${esc(CONFIG.logoText)}</span>
-      </div>
-
-      <!-- Hero -->
-      <div class="card-hero">
-        <!-- Microphone -->
-        <div class="mic-col">
-          <svg class="mic-svg" viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Rings -->
-            <circle cx="50" cy="70" r="46" stroke="rgba(126,200,58,.15)" stroke-width="1.5" />
-            <circle cx="50" cy="70" r="36" stroke="rgba(126,200,58,.2)" stroke-width="1.5" />
-            <!-- Mic body -->
-            <rect x="32" y="18" width="36" height="58" rx="18" fill="#1e1e2e" stroke="#555" stroke-width="1.5"/>
-            <!-- Mic grille lines -->
-            <line x1="38" y1="38" x2="62" y2="38" stroke="#444" stroke-width="1"/>
-            <line x1="38" y1="45" x2="62" y2="45" stroke="#444" stroke-width="1"/>
-            <line x1="38" y1="52" x2="62" y2="52" stroke="#444" stroke-width="1"/>
-            <line x1="38" y1="59" x2="62" y2="59" stroke="#444" stroke-width="1"/>
-            <!-- Stand arc -->
-            <path d="M26 76 Q26 106 50 106 Q74 106 74 76" stroke="#666" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <!-- Stand pole -->
-            <line x1="50" y1="106" x2="50" y2="128" stroke="#666" stroke-width="3" stroke-linecap="round"/>
-            <!-- Base -->
-            <line x1="34" y1="128" x2="66" y2="128" stroke="#666" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-          <div class="mic-label">${esc(CONFIG.timezone)}</div>
-        </div>
-
-        <!-- Title -->
-        <div class="title-col">
-          <h1>${titleHTML()}</h1>
-        </div>
-
-        <!-- Guest -->
-        <div class="guest-col">
-          ${guestPhoto()}
-          <div class="guest-org">${esc(CONFIG.guestOrg)}</div>
-        </div>
-      </div>
-
-      <!-- Episode badge -->
-      <div class="episode-badge">
-        <div class="badge-pill">
-          <div class="badge-item"><span class="icon">📅</span>${esc(CONFIG.episodeDate)}</div>
-          <div class="badge-divider"></div>
-          <div class="badge-item"><span class="icon">🕗</span>${esc(CONFIG.episodeTime)}</div>
-          <div class="badge-divider"></div>
-          <div class="badge-item"><span class="icon">🎙️</span>ایپزود ${esc(CONFIG.episodeNumber)}</div>
-        </div>
-      </div>
-
-      <!-- Live features -->
-      <div class="features-section">
-        <div class="features-label">
-          <span class="wave-icon">〰</span>
-          ${esc(CONFIG.liveSectionTitle)}
-          <span class="wave-icon">〰</span>
-        </div>
-        <div class="features-grid">${featuresHTML()}</div>
-      </div>
-
-      <!-- Replay strip -->
-      <div class="replay-section">
-        <div class="replay-platforms">${platformsHTML()}</div>
-        <div class="replay-text">
-          <strong>${esc(CONFIG.replayTitle)}</strong>
-          <small>${esc(CONFIG.replaySubtext)}</small>
-        </div>
-        <div class="qr-placeholder">QR<br>Code<br>اینجا</div>
-      </div>
-
-      <!-- Footer -->
-      <div class="card-footer">
-        <div class="footer-cta">
-          <div style="font-size:1.2rem">👆</div>
-          <div class="footer-cta-text">${esc(CONFIG.ctaText)}</div>
-          <div class="footer-cta-link">${esc(CONFIG.ctaHandle)}</div>
-        </div>
-        <div class="footer-socials">
-          <div class="footer-socials-label">ما را در رسانه های دیگر دنبال کنید</div>
-          <div class="social-icons">${socialsHTML()}</div>
-        </div>
-      </div>
-    `;
+    /* ── QR Code ── */
+    new QRCode(document.getElementById('qr-code'), {
+      text:         CONFIG.qrUrl,
+      width:        100,
+      height:       100,
+      colorDark:    '#021327',
+      colorLight:   '#ffffff',
+      correctLevel: QRCode.CorrectLevel.H,
+    });
   </script>
 
-  <!-- html2canvas for PNG export -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+  <!-- ════════════════ EXPORT SCRIPT ════════════════ -->
   <script>
     async function exportPNG() {
-      const btn   = document.getElementById('export-btn');
-      const note  = document.getElementById('export-note');
-      const card  = document.getElementById('card');
+      const btn  = document.getElementById('export-btn');
+      const note = document.getElementById('export-note');
 
-      btn.disabled = true;
+      btn.disabled    = true;
       btn.textContent = '⏳ در حال ساخت تصویر…';
-      note.textContent = 'لطفاً صبر کنید – rendering…';
+      note.textContent = 'لطفاً صبر کنید…';
 
       try {
-        const canvas = await html2canvas(card, {
-          scale:            3,          // 3× for crisp high-res PNG
-          useCORS:          true,       // allow cross-origin images
-          allowTaint:       false,
-          backgroundColor:  null,       // preserve transparency if any
-          logging:          false,
+        const canvas = await html2canvas(document.getElementById('poster'), {
+          scale:           3,
+          useCORS:         true,
+          allowTaint:      false,
+          backgroundColor: '#ffffff',
+          logging:         false,
         });
 
-        const link      = document.createElement('a');
-        const filename  = `BIDAR-ep${CONFIG.episodeNumber}-${CONFIG.episodeDate.replace(/\s/g,'-')}.png`;
-        link.download   = filename;
-        link.href       = canvas.toDataURL('image/png');
+        const ep   = CONFIG.episodeNumber || 'ep';
+        const date = (CONFIG.episodeDate || '').replace(/\s/g, '-');
+        const link = document.createElement('a');
+        link.download = `BIDAR-ep${ep}-${date}.png`;
+        link.href     = canvas.toDataURL('image/png');
         link.click();
 
-        note.textContent = `✅ دانلود شد: ${filename}`;
+        note.textContent = `✅ دانلود شد: BIDAR-ep${ep}-${date}.png`;
       } catch (err) {
         console.error(err);
-        note.textContent = '❌ خطا در ساخت تصویر – لطفاً دوباره امتحان کنید.';
+        note.textContent = '❌ خطا – لطفاً دوباره امتحان کنید.';
       } finally {
         btn.disabled    = false;
         btn.textContent = '📥 دانلود PNG';

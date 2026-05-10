@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Bidar Banner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #041421;
+            --accent-yellow: #ffcc00;
+            --light-blue-bg: #eef5f9;
+            --text-white: #ffffff;
+            --text-muted: #d1d1d1;
+            --border-color: #3e4a56;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+        }
+
+        .banner-container {
+            width: 800px;
+            background: linear-gradient(to bottom, var(--dark-blue) 45%, var(--light-blue-bg) 45%);
+            color: var(--text-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        /* --- Header Section --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            background: #40e0d0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: var(--dark-blue);
+            font-size: 24px;
+        }
+
+        .brand-name h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        .brand-name p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            display: flex;
+            padding: 0 40px 40px 40px;
+            justify-content: space-between;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h2 {
+            font-size: 42px;
+            color: var(--accent-yellow);
+            margin: 20px 0;
+            line-height: 1.4;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-muted);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .microphone-placeholder {
+            width: 180px;
+            height: 250px;
+            background: radial-gradient(circle, #333, #000);
+            border-radius: 90px 90px 20px 20px;
+            border: 4px solid #555;
+        }
+
+        /* --- Schedule Section --- */
+        .schedule-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .join-box, .time-box {
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .join-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .telegram-btn {
+            background: #fff;
+            color: var(--dark-blue);
+            padding: 8px 15px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .time-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .time-item span {
+            display: block;
+            font-size: 12px;
+            color: var(--accent-yellow);
+        }
+
+        .time-item strong {
+            font-size: 18px;
+        }
+
+        /* --- White Bottom Section --- */
+        .features-section {
+            padding: 40px;
+            color: #333;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card i {
+            font-size: 30px;
+            color: #0088cc;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h4 {
+            margin: 10px 0 5px 0;
+            font-size: 14px;
+        }
+
+        .feature-card p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* --- Social & QR Section --- */
+        .social-archive {
+            border-top: 1px solid #ddd;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-item {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .social-item i {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .youtube { color: #ff0000; }
+        .spotify { color: #1DB954; }
+        .apple { color: #a2aaad; }
+        .google { color: #4285F4; }
+        .telegram { color: #0088cc; }
+
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            background: #000;
+            border: 5px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #eef5f9;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #fff;
+        }
+
+        .footer-socials {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #555;
+        }
+
+        .bell-cta {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .bell-cta i {
+            color: #0088cc;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="banner-container">
+    <header>
+        <div class="logo-area">
+            <div class="logo-circle">B</div>
+            <div class="brand-name">
+                <h1>Radio.BIDAR.ca</h1>
+                <p>صدای آگاهی و گفتگو</p>
+            </div>
+        </div>
+        <div style="font-size: 24px;"><i class="fa-regular fa-bell"></i></div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-text">
+            <h2>به برنامه زنده<br>رادیو بیدار بپیوندید</h2>
+            <p>در گفتگوهای زنده شرکت کنید، سوال بپرسید، نظر بدهید و بخشی از جامعه آگاه و بیدار باشید.</p>
+        </div>
+        <div class="hero-image">
+            <div class="microphone-placeholder"></div>
+        </div>
+    </div>
+
+    <div class="schedule-container">
+        <div class="join-box">
+            <span>همین حالا عضو شوید!</span>
+            <small>لینک ورود به برنامه زنده در تلگرام</small>
+            <div class="telegram-btn">t.me/BIDAR_live</div>
+        </div>
+        <div class="time-box">
+            <div style="text-align: center; color: var(--accent-yellow); margin-bottom: 10px;">زمان برنامه بعدی:</div>
+            <div class="time-grid">
+                <div class="time-item">
+                    <span>موضوع برنامه</span>
+                    <strong>عنوان برنامه</strong>
+                </div>
+                <div class="time-item">
+                    <span>ساعت</span>
+                    <strong>XX:XX</strong>
+                </div>
+                <div class="time-item">
+                    <span>روز هفته</span>
+                    <strong>DD MMM YYYY</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <div class="features-title">
+            <div style="height:2px; width:50px; background: #ddd;"></div>
+            در برنامه زنده چه خبر است؟
+            <div style="height:2px; width:50px; background: #ddd;"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-users"></i>
+                <h4>جامعه‌ای از همراهان</h4>
+                <p>مکان امن برای گفتگو و یادگیری</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <h4>موضوعات متنوع</h4>
+                <p>تحلیل، تجربه، آگاهی و راهکار</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-user-pen"></i>
+                <h4>پرسش و پاسخ زنده</h4>
+                <p>سوالات شما پاسخ داده می‌شود</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-comments"></i>
+                <h4>گفتگو و تبادل نظر</h4>
+                <p>با مهمان و سایر شرکت‌کنندگان</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-archive">
+        <div>
+            <p style="font-weight: bold; margin-bottom: 15px;">مشاهده نسخه ضبط شده برنامه</p>
+            <div class="social-icons">
+                <div class="social-item"><i class="fa-brands fa-youtube youtube"></i> YouTube</div>
+                <div class="social-item"><i class="fa-brands fa-spotify spotify"></i> Spotify</div>
+                <div class="social-item"><i class="fa-brands fa-apple apple"></i> Apple</div>
+                <div class="social-item"><i class="fa-brands fa-google google"></i> Google</div>
+                <div class="social-item"><i class="fa-brands fa-telegram telegram"></i> Telegram</div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <div class="qr-code"></div>
+            <p style="font-size: 10px; margin-top: 5px;">اسکن کنید</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-socials">
+            <span>ما را در رسانه‌های دیگر دنبال کنید</span>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-facebook"></i>
+            <strong>@BIDAR_ca</strong>
+        </div>
+        <div class="bell-cta">
+            <i class="fa-solid fa-bell"></i>
+            <span>زنگوله را فعال کنید تا زمان شروع برنامه را از دست ندهید!</span>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
