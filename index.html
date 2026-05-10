@@ -404,8 +404,8 @@
   <!-- ── The card ─────────────────────────────────────────────── -->
   <div id="card"></div>
 
-  <button id="export-btn" onclick="printCard()">📥 آماده چاپ / Export for Print</button>
-  <p id="export-note">Use browser Print → Save as PDF to export a high-quality image.</p>
+  <button id="export-btn" onclick="exportPNG()">📥 دانلود PNG</button>
+  <p id="export-note">کلیک کنید تا تصویر با کیفیت بالا دانلود شود · Click to download a high-res PNG</p>
 
   <script>
     /* ─── Apply CSS vars from CONFIG ─── */
@@ -588,19 +588,42 @@
     `;
   </script>
 
+  <!-- html2canvas for PNG export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <script>
-    function printCard() {
-      const card = document.getElementById('card');
-      const w = window.open('', '_blank');
-      w.document.write(`<!DOCTYPE html><html dir="rtl"><head>
-        <meta charset="UTF-8"/>
-        <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
-        <style>
-          body{margin:0;padding:20px;background:#0d1120;display:flex;justify-content:center;font-family:'Vazirmatn',sans-serif;}
-          @media print{body{background:#0d1120;-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
-        </style>
-      </head><body>${card.outerHTML}<script>window.onload=()=>{window.print();}<\/script></body></html>`);
-      w.document.close();
+    async function exportPNG() {
+      const btn   = document.getElementById('export-btn');
+      const note  = document.getElementById('export-note');
+      const card  = document.getElementById('card');
+
+      btn.disabled = true;
+      btn.textContent = '⏳ در حال ساخت تصویر…';
+      note.textContent = 'لطفاً صبر کنید – rendering…';
+
+      try {
+        const canvas = await html2canvas(card, {
+          scale:            3,          // 3× for crisp high-res PNG
+          useCORS:          true,       // allow cross-origin images
+          allowTaint:       false,
+          backgroundColor:  null,       // preserve transparency if any
+          logging:          false,
+        });
+
+        const link      = document.createElement('a');
+        const filename  = `BIDAR-ep${CONFIG.episodeNumber}-${CONFIG.episodeDate.replace(/\s/g,'-')}.png`;
+        link.download   = filename;
+        link.href       = canvas.toDataURL('image/png');
+        link.click();
+
+        note.textContent = `✅ دانلود شد: ${filename}`;
+      } catch (err) {
+        console.error(err);
+        note.textContent = '❌ خطا در ساخت تصویر – لطفاً دوباره امتحان کنید.';
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = '📥 دانلود PNG';
+      }
     }
   </script>
 
