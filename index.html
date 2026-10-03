@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bidar Banner Editor</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#eef1f5;color:#17202a;font-family:Tahoma,Arial,sans-serif}
+    .app{max-width:1180px;margin:0 auto;padding:24px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    h1{font-size:22px;margin:0 0 5px}
+    .sub{margin:0;color:#667085;font-size:13px}
+    .layout{display:grid;grid-template-columns:330px 1fr;gap:20px;direction:ltr}
+    .panel,.preview{background:#fff;border:1px solid #dfe4ea;border-radius:16px;box-shadow:0 5px 20px #0000000a}
+    .panel{padding:18px;direction:rtl}
+    .preview{padding:18px;display:flex;align-items:center;justify-content:center;min-height:650px;background:#f8fafc}
+    label{display:block;font-weight:700;font-size:13px;margin:14px 0 7px}
+    input,select,button{font:inherit}
+    input,select{width:100%;height:42px;border:1px solid #cfd6df;border-radius:9px;padding:0 11px;background:#fff}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    button{border:0;border-radius:9px;padding:11px 14px;cursor:pointer;font-weight:700}
+    .primary{background:#172554;color:#fff;width:100%;margin-top:16px}
+    .secondary{background:#eef2f7;color:#17202a}
+    .hint{font-size:11px;line-height:1.8;color:#667085;margin-top:10px}
+    .canvas-wrap{max-width:100%;max-height:610px;overflow:auto;display:flex;justify-content:center;align-items:center}
+    canvas{display:block;max-width:100%;height:auto;box-shadow:0 8px 30px #0002}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .toolbar button{background:#fff;border:1px solid #d5dbe3}
+    .status{font-size:12px;color:#667085;margin-top:10px;text-align:center}
+    .sizes{margin-top:18px;padding-top:15px;border-top:1px solid #e8ebef}
+    .size-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .size-grid button{background:#f5f7fa;border:1px solid #e0e5eb;font-size:12px}
+    .small{font-size:11px;color:#7a8491}
+    @media(max-width:850px){.layout{grid-template-columns:1fr}.preview{min-height:auto}.canvas-wrap{max-height:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>ویرایشگر پوستر بیدار</h1>
+      <p class="sub">فقط تاریخ و ساعت را تغییر بده و تصویر نهایی را با اندازه دلخواه دریافت کن.</p>
+    </div>
+    <div class="toolbar" style="margin:0;direction:rtl">
+      <button id="editBtn">✎ ویرایش</button>
+      <button id="downloadBtn" class="secondary">↓ دانلود PNG</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="panel">
+      <label for="dateText">تاریخ نمایش</label>
+      <input id="dateText" value="12 سپتامبر" placeholder="مثلاً 12 سپتامبر">
+
+      <label for="timeText">ساعت</label>
+      <input id="timeText" value="21:00" placeholder="مثلاً 21:00" dir="ltr">
+
+      <label for="size">اندازه خروجی</label>
+      <select id="size">
+        <option value="original">اندازه اصلی (532 × 535)</option>
+        <option value="1064x1070">2× — 1064 × 1070</option>
+        <option value="1080x1086">1080 × 1086</option>
+        <option value="1080x1080">1080 × 1080</option>
+        <option value="2160x2171">4K تقریبی — 2160 × 2171</option>
+        <option value="custom">اندازه دلخواه</option>
+      </select>
+
+      <div id="customSize" class="row" style="display:none">
+        <div><label>عرض</label><input id="customW" type="number" min="100" value="1080" dir="ltr"></div>
+        <div><label>ارتفاع</label><input id="customH" type="number" min="100" value="1086" dir="ltr"></div>
+      </div>
+
+      <button id="applyBtn" class="primary">اعمال تغییرات</button>
+
+      <div class="sizes">
+        <b style="font-size:13px">خروجی‌های سریع</b>
+        <div class="size-grid" style="margin-top:9px">
+          <button data-size="original">اصلی</button>
+          <button data-size="1064x1070">2×</button>
+          <button data-size="1080x1086">1080px</button>
+          <button data-size="1080x1080">مربع</button>
+        </div>
+      </div>
+
+      <p class="hint">
+        این سایت کاملاً سمت مرورگر اجرا می‌شود و برای GitHub Pages مناسب است؛
+        سرور یا دیتابیس لازم ندارد. قالب اصلی تصویر داخل همین پروژه قرار گرفته است.
+      </p>
+      <div class="status" id="status">آماده است.</div>
+    </section>
+
+    <section class="preview">
+      <div class="canvas-wrap"><canvas id="canvas"></canvas></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const img = new Image();
+img.src = "banner-template.png";
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const dateInput = document.getElementById("dateText");
+const timeInput = document.getElementById("timeText");
+const sizeSelect = document.getElementById("size");
+const customSize = document.getElementById("customSize");
+const statusEl = document.getElementById("status");
+
+const BASE_W = 532, BASE_H = 535;
+
+img.onload = () => render();
+
+function getSize(){
+  if(sizeSelect.value === "original") return [BASE_W, BASE_H];
+  if(sizeSelect.value === "custom") {
+    return [Math.max(100,+document.getElementById("customW").value||1080),
+            Math.max(100,+document.getElementById("customH").value||1086)];
+  }
+  return sizeSelect.value.split("x").map(Number);
+}
+
+function render(){
+  const [w,h] = getSize();
+  canvas.width = w; canvas.height = h;
+  const sx=w/BASE_W, sy=h/BASE_H;
+  ctx.clearRect(0,0,w,h);
+  ctx.drawImage(img,0,0,w,h);
+
+  // The date/time block in the supplied artwork.
+  // Coordinates are based on the 532×535 source image.
+  const scale = Math.min(sx,sy);
+  const ox = (w - BASE_W*scale)/2;
+  const oy = (h - BASE_H*scale)/2;
+
+  // Because non-proportional sizes are supported, map source coordinates
+  // independently to the selected output dimensions.
+  const X=x=>x*sx, Y=y=>y*sy;
+
+  // Cover the original date/time text while preserving the blue rounded block.
+  // This area intentionally stays inside the existing blue panel.
+  ctx.fillStyle = "#176f8f";
+  // Cover only the existing date and time text; the calendar, clock,
+  // microphone and "every Saturday" artwork remain untouched.
+  ctx.fillRect(X(163), Y(246), X(76), Y(22));
+  ctx.fillRect(X(264), Y(246), X(40), Y(22));
+
+  ctx.direction = "rtl";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Date
+  ctx.fillStyle = "#ffd31a";
+  ctx.font = `bold ${Math.max(11, Math.round(13*scale))}px Tahoma, Arial, sans-serif`;
+  ctx.fillText(dateInput.value.trim() || "12 سپتامبر", X(201), Y(257));
+
+  // Time
+  ctx.direction = "ltr";
+  ctx.font = `bold ${Math.max(12, Math.round(14*scale))}px Arial, Tahoma, sans-serif`;
+  ctx.fillText(timeInput.value.trim() || "21:00", X(284), Y(257));
+
+  statusEl.textContent = `پیش‌نمایش: ${w} × ${h} پیکسل`;
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();
+  c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r);
+  c.arcTo(x+w,y+h,x,y+h,r);
+  c.arcTo(x,y+h,x,y,r);
+  c.arcTo(x,y,x+w,y,r);
+  c.closePath();
+}
+
+document.getElementById("applyBtn").onclick = render;
+document.getElementById("editBtn").onclick = () => {
+  dateInput.focus();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+sizeSelect.onchange = () => {
+  customSize.style.display = sizeSelect.value === "custom" ? "grid" : "none";
+  render();
+};
+document.getElementById("customW").oninput = render;
+document.getElementById("customH").oninput = render;
+dateInput.oninput = render;
+timeInput.oninput = render;
+
+document.querySelectorAll("[data-size]").forEach(b => {
+  b.onclick = () => { sizeSelect.value=b.dataset.size; customSize.style.display="none"; render(); };
+});
+
+document.getElementById("downloadBtn").onclick = () => {
+  render();
+  const [w,h]=getSize();
+  const a=document.createElement("a");
+  const safeDate=(dateInput.value.trim()||"date").replace(/[\\/:*?"<>|]/g,"-");
+  const safeTime=(timeInput.value.trim()||"time").replace(/[:]/g,"-");
+  a.download=`bidar-${safeDate}-${safeTime}-${w}x${h}.png`;
+  a.href=canvas.toDataURL("image/png");
+  a.click();
+};
+
+window.addEventListener("keydown", e => {
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="s"){
+    e.preventDefault(); document.getElementById("downloadBtn").click();
+  }
+});
+</script>
+</body>
+</html>
