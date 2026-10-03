@@ -1,24 +1,7 @@
 # Bidar Banner Editor
 
 یک ویرایشگر ساده و مستقل برای GitHub Pages.
-
-## امکانات
-- تغییر فقط تاریخ و ساعت روی پوستر
-- پیش‌نمایش فوری
-- دانلود PNG
-- اندازه اصلی، 2×، 1080px، مربع و اندازه دلخواه
-- بدون نیاز به سرور یا دیتابیس
-- مناسب برای GitHub Pages
-
-## انتشار روی GitHub
-
-1. یک Repository جدید بسازید.
-2. فایل‌های `index.html` و `banner-template.png` را در ریشه Repository قرار دهید.
-3. از مسیر **Settings → Pages**، گزینه **Deploy from a branch** را انتخاب کنید.
-4. Branch را روی `main` و Folder را روی `/ (root)` بگذارید.
-5. Save کنید.
-
-بعد از فعال شدن Pages، سایت در آدرس GitHub Pages شما قابل استفاده است.
+ GitHub Pages شما قابل استفاده است.
 
 ## تغییرات بعدی
 برای هر بار استفاده فقط:
